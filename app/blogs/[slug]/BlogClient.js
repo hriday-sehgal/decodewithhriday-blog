@@ -362,4 +362,3 @@ function RelatedPosts({ categories, currentPostSlug }) {
     </>
   );
 }
-

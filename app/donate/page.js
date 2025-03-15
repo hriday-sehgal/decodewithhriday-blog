@@ -128,13 +128,13 @@ export default function DonatePage() {
             </div>
 
           <p className="text-center text-gray-700 mt-4">
-            Scan to Donate via UPI
+            Scan to Support via UPI
           </p>
         </div>
 
         <div className="border-t border-gray-200 pt-8">
           <h2 className="text-2xl font-semibold text-gray-900 mb-4">
-            Confirm Your Donation
+            Confirm Your Support
           </h2>
           <p className="text-gray-700 mb-6">
             Please submit your details after completing the payment.
@@ -181,7 +181,7 @@ export default function DonatePage() {
             </div>
             <div>
               <label htmlFor="amount" className="block text-sm font-medium text-gray-700">
-                Donation Amount (₹) <span className="text-red-500">*</span>
+                Support Amount (₹) <span className="text-red-500">*</span>
               </label>
               <input
                 type="number"
@@ -233,7 +233,7 @@ export default function DonatePage() {
                 </>
 
               ) : (
-                "Submit Donation Details"
+                "Submit Details"
               )}
             </button>
           </form>

@@ -11,9 +11,9 @@ export const metadata = {
 };
 
 export default function PrivacyPolicyPage() {
-  const lastUpdatedDate = "24 February, 2025"; //  Update this!
+  const lastUpdatedDate = "14 March, 2025"; //  Update this!
   const contactEmail = "hriday.career@gmail.com";   //  your contact email.
-  const blogURL = "http://localhost:3000/"; // Replace
+  const blogURL = "https://decodewithhriday.vercel.app/"; 
 
   
   return (
@@ -133,4 +133,3 @@ export default function PrivacyPolicyPage() {
     </div>
   );
 }
-
