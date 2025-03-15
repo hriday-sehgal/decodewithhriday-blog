@@ -1,36 +1,35 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Decode with Hriday - Unlock the World of Knowledge
 
-## Getting Started
+## About the Project
+**Decode with Hriday** is a dynamic and insightful blog website designed to deliver high-quality content across multiple domains, including technology, product management, web development, healthcare, and project management. The platform enables users to engage with well-researched articles and offers an exclusive premium membership for unlocking high-value content.
 
-First, run the development server:
+## Features
+- **Engaging Blog Content**: Covers a wide range of topics, including technology, software development, product management, and healthcare.
+- **Premium Membership** (Coming Soon): Unlock exclusive content, early access, and downloadable resources.
+- **Secure Authentication**: Users can sign in via **Supabase Auth with Google OAuth** for seamless and secure access.
+- **Payments Integration**: Premium content access is enabled through **Razorpay** for secure and efficient transactions.
+- **Content Management**: Powered by **Sanity CMS**, allowing seamless content updates.
+- **Modern Web Experience**: Responsive and optimized for all devices with fast load times.
+- **SEO-Friendly**: Optimized metadata and structured content for better search rankings.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## Tech Stack
+- **Framework**: Next.js (React-based framework)
+- **Authentication**: Supabase Auth with Google OAuth
+- **Database**: Supabase (PostgreSQL-based Storage)
+- **CMS**: Sanity.io Content Management System
+- **Payments**: Razorpay for seamless transactions
+- **Hosting**: Vercel (Optimized for fast deployments)
+- **Styling**: Tailwind CSS
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Live URL
+Check out the live website at: **[Decode with Hriday](https://decodewithhriday.vercel.app/)**
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+## Copyright Disclaimer
+This project is proprietary and all rights are reserved. **No part of the codebase may be copied, modified, distributed, or reproduced in any form without explicit permission.**
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Contact
+For inquiries or collaborations, reach out via:
+- **Email**: hriday.career@gmail.com
 
-## Learn More
+**Decode with Hriday | Uncover. Understand. Apply.**
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
