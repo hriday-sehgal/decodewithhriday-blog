@@ -114,7 +114,7 @@ export default async function HomePage() {
                             <Link href="/premium" className="inline-block bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 sm:py-3 sm:px-8 rounded-full transition-colors hover:scale-105">
                                 Go Premium
                             </Link> &nbsp;
-                            <Link href="/donate" className="inline-block bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 sm:py-3 sm:px-8 rounded-full transition-colors hover:scale-105">
+                            <Link href="/support" className="inline-block bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 sm:py-3 sm:px-8 rounded-full transition-colors hover:scale-105">
                                 Support My Work
                             </Link>
                         </div>

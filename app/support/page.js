@@ -86,7 +86,7 @@ export default function DonatePage() {
       }
 
       setSuccessMessage(
-        "Thank you for your donation! We appreciate your support."
+        "Thank you for your support! We sincerely appreciate it."
       );
 
       // Clear form

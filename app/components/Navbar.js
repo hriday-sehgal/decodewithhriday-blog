@@ -153,7 +153,7 @@ const Navbar = () => {
                 About
               </span>
             </Link>
-            <Link href="/donate">
+            <Link href="/support">
               <span className="block hover:text-blue-500 dark:hover:text-blue-400 py-2 md:py-0">
                 Support
               </span>
