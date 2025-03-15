@@ -8,7 +8,7 @@ const inter = Inter({ subsets: ['latin'] });
 
 export const metadata = {
   title: 'Decode with Hriday',
-  description: 'Welcome to my Blog Website',
+  description: 'Read the latest blogs on web development, programming, and technology.',
   icons: {
     icon: '/favicon.ico',
   },
