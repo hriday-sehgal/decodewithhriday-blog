@@ -27,7 +27,10 @@
 Check out the live website at: **[Decode with Hriday](https://decodewithhriday.vercel.app/)**
 
 ## Copyright Disclaimer
-This project is proprietary and all rights are reserved. **No part of the codebase may be copied, modified, distributed, or reproduced in any form without explicit permission.**
+Copyright © 2025 Hriday Sehgal. All rights reserved.
+
+This project and its source code are the proprietary intellectual property of Hriday Sehgal. Unauthorized copying, modification, distribution, or reproduction in any form without explicit permission is strictly prohibited.
+
 
 ## Contact
 For inquiries or collaborations, reach out via:
