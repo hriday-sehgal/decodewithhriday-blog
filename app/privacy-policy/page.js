@@ -1,17 +1,22 @@
 // app/privacy-policy/page.js
 import Link from 'next/link';
-import { Fade } from 'react-awesome-reveal';
 
 export const metadata = {
-  title: 'Decode with Hriday | Privacy Policy',
-  description: 'Privacy Policy',
-  icons: {
-    icon: '/favicon.ico',
+  title: 'Privacy Policy',
+  description: 'Privacy Policy details and data usage policies for Decode with Hriday blog.',
+  alternates: {
+    canonical: '/privacy-policy',
+  },
+  openGraph: {
+    type: 'website',
+    url: 'https://decodewithhriday.vercel.app/privacy-policy',
+    title: 'Privacy Policy | Decode with Hriday',
+    description: 'Privacy Policy details and data usage policies for Decode with Hriday blog.',
   },
 };
 
 export default function PrivacyPolicyPage() {
-  const lastUpdatedDate = "14 March, 2025"; //  Update this!
+  const lastUpdatedDate = "17 July, 2026"; 
   const contactEmail = "hriday.career@gmail.com";   //  your contact email.
   const blogURL = "https://decodewithhriday.vercel.app/"; 
 
@@ -38,8 +43,7 @@ export default function PrivacyPolicyPage() {
           <h3>a) Personal Information:</h3>
           <ul>
             <li>Name (if provided through forms)</li>
-            <li>Email address (for subscriptions, contact forms, or premium content access)</li>
-            <li>Payment details (processed securely via third-party services like Razorpay)</li>
+            <li>Email address (for subscriptions or contact forms)</li>
           </ul>
 
           <h3>b) Non-Personal Information:</h3>
@@ -53,7 +57,6 @@ export default function PrivacyPolicyPage() {
           <p>We may use your information to:</p>
           <ul>
             <li>Provide and improve our content and services</li>
-            <li>Process payments for premium content</li>
             <li>Send newsletters or updates (only if you opt-in)</li>
             <li>Monitor and analyze site traffic with Google Analytics</li>
             <li>Enhance website security and prevent fraud</li>
@@ -69,13 +72,10 @@ export default function PrivacyPolicyPage() {
           <p>We may use third-party services such as:</p>
           <ul>
             <li>
-              <strong>Supabase</strong> (for authentication and database management)
+              <strong>Supabase</strong> (for database management and user subscriptions)
             </li>
             <li>
               <strong>Sanity CMS</strong> (for content management)
-            </li>
-            <li>
-              <strong>Razorpay</strong> (for payment processing)
             </li>
             <li>
               <strong>Google Analytics</strong> (for tracking site performance)
@@ -119,11 +119,9 @@ export default function PrivacyPolicyPage() {
             </a>
             <br />
             <strong>Website:</strong>{' '}
-            <Link href={blogURL} legacyBehavior>
-                <a  target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:underline">
-                    {blogURL}
-                </a>
-               </Link>
+            <Link href={blogURL} target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:underline">
+                {blogURL}
+            </Link>
           </p>
 
           <p>Thank you for visiting Decode with Hriday!</p>

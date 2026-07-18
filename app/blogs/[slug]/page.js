@@ -1,9 +1,65 @@
-// app/blogs/[slug]/page.js (Changes for next/prev post logic)
-import { client } from '@/lib/sanity';
+import { client, urlFor } from '@/lib/sanity';
 import BlogClient from './BlogClient';
 
+export async function generateMetadata({ params }) {
+  const { slug } = await params;
+  
+  const post = await client.fetch(
+    `*[_type == "post" && slug.current == $slug][0]{
+      title,
+      excerpt,
+      mainImage,
+      publishedAt,
+      author->{name},
+      categories[]->{title}
+    }`,
+    { slug }
+  );
+
+  if (!post) {
+    return {
+      title: 'Post Not Found | Decode with Hriday',
+    };
+  }
+
+  const imageUrl = post.mainImage 
+    ? urlFor(post.mainImage).width(1200).height(630).url() 
+    : 'https://decodewithhriday.vercel.app/dwh_new_logo.png';
+
+  return {
+    title: post.title,
+    description: post.excerpt,
+    alternates: {
+      canonical: `/blogs/${slug}`,
+    },
+    openGraph: {
+      type: 'article',
+      url: `https://decodewithhriday.vercel.app/blogs/${slug}`,
+      title: post.title,
+      description: post.excerpt,
+      publishedTime: post.publishedAt,
+      authors: [post.author?.name || 'Hriday Sehgal'],
+      tags: post.categories?.map(c => c.title) || [],
+      images: [
+        {
+          url: imageUrl,
+          width: 1200,
+          height: 630,
+          alt: post.title,
+        },
+      ],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: post.title,
+      description: post.excerpt,
+      images: [imageUrl],
+    },
+  };
+}
+
 export default async function BlogPostPage({ params }) {
-  const { slug } = params;
+  const { slug } = await params;
 
   const post = await client.fetch(
     `*[_type == "post" && slug.current == $slug][0]{
@@ -56,4 +112,5 @@ export async function generateStaticParams() {
   )
   return paths.map((slug) => ({ slug }))
 }
-export const dynamicParams = false;
+export const dynamicParams = true;
+export const revalidate = 60;

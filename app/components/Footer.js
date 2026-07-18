@@ -1,86 +1,116 @@
-// app/(components)/Footer.js
+// app/components/Footer.js
 'use client';
 import Link from 'next/link';
+import Image from 'next/image';
+import { FaLinkedin, FaGithub, FaEnvelope } from 'react-icons/fa';
 import { motion } from 'framer-motion';
-import Image from 'next/image'; // Import Image
 
 const Footer = () => {
+  const currentYear = new Date().getFullYear();
+
+  const socialLinks = [
+    { name: 'LinkedIn', icon: <FaLinkedin className="w-5 h-5" />, url: 'https://www.linkedin.com/in/hridaysehgal/' },
+    { name: 'GitHub', icon: <FaGithub className="w-5 h-5" />, url: 'https://github.com/hriday-sehgal/' },
+    { name: 'Email', icon: <FaEnvelope className="w-5 h-5" />, url: 'mailto:hriday.career@gmail.com' },
+  ];
+
+  const quickLinks = [
+    { name: 'Home', url: '/' },
+    { name: 'Blogs', url: '/blogs' },
+    { name: 'About', url: '/about' },
+    { name: 'Contact', url: '/contact' },
+  ];
+
   return (
-    <motion.footer
-      className="bg-gray-100 dark:bg-gray-900 py-8 mt-20"
-      initial={{ opacity: 0, y: 50 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5, delay: 0.2 }}
-    >
-      <div className="container mx-auto px-6 md:px-12">
-        <div className="flex flex-wrap items-center justify-between">
-          {/* Left: Logo and Tagline */}
-          <div className="w-full md:w-auto text-center md:text-left mb-4 md:mb-0">
-          <Link href="/">
-            <Image
-              src="/DWH_logo.png"  // Path to your logo. Make sure it exists!
-              alt="Decode with Hriday Logo"
-              width={50}   // Adjust as needed
-              height={50}  // Adjust as needed, maintain aspect ratio
-              className="inline-block" // Important for proper alignment
-            />
-          </Link>
-          <p className="text-gray-600 dark:text-gray-400 mt-2">
-          Decode with Hriday | Uncover. Understand. Apply.
+    <footer className="relative mt-auto border-t border-slate-200/50 dark:border-zinc-800/80 bg-white/40 dark:bg-[#030712]/30 backdrop-blur-sm">
+      <div className="container mx-auto px-4 md:px-8 py-16">
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-10 md:gap-8">
+          
+          {/* Brand Segment */}
+          <div className="md:col-span-5 flex flex-col space-y-4">
+            <Link href="/" className="flex items-center space-x-2.5 w-fit">
+              <div className="relative w-8 h-8">
+                <Image
+                  src="/dwh_new_logo.png"
+                  alt="Decode with Hriday Logo"
+                  fill
+                  sizes="32px"
+                  className="object-contain"
+                />
+              </div>
+              <span className="font-display font-bold text-lg tracking-tight bg-gradient-to-r from-violet-600 to-indigo-600 dark:from-violet-400 dark:to-indigo-400 bg-clip-text text-transparent">
+                Decode with Hriday
+              </span>
+            </Link>
+            <p className="text-sm text-slate-500 dark:text-zinc-400 max-w-sm leading-relaxed">
+              Uncover the depths of generative AI, Hybrid RAG systems, multi-agent frameworks, and full-stack engineering. Engineering logs by Hriday Sehgal.
             </p>
-           
+            <div className="flex items-center space-x-3 pt-2">
+              {socialLinks.map((social) => (
+                <motion.a
+                  key={social.name}
+                  href={social.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  whileHover={{ scale: 1.1, y: -2 }}
+                  whileTap={{ scale: 0.9 }}
+                  aria-label={social.name}
+                  className="p-2 rounded-lg border border-slate-200 dark:border-zinc-800 text-slate-500 dark:text-zinc-400 hover:text-violet-600 dark:hover:text-violet-400 hover:bg-slate-100 dark:hover:bg-zinc-800/60 transition-colors duration-200"
+                >
+                  {social.icon}
+                </motion.a>
+              ))}
+            </div>
           </div>
 
-          {/* Right: Links (Horizontal) */}
-          <div className="w-full md:w-auto text-center md:text-right">
-            <ul className="flex flex-wrap justify-center md:justify-end space-x-4 md:space-x-6">
+          {/* Quick Links */}
+          <div className="col-span-1 md:col-span-3 flex flex-col space-y-4">
+            <h3 className="font-display font-bold text-xs uppercase tracking-wider text-slate-400 dark:text-zinc-500">
+              Navigation
+            </h3>
+            <ul className="space-y-2.5">
+              {quickLinks.map((link) => (
+                <li key={link.name}>
+                  <Link href={link.url}>
+                    <span className="text-sm text-slate-600 dark:text-zinc-400 hover:text-violet-600 dark:hover:text-violet-400 transition-colors duration-200">
+                      {link.name}
+                    </span>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Legal / Info */}
+          <div className="col-span-1 md:col-span-4 flex flex-col space-y-4">
+            <h3 className="font-display font-bold text-xs uppercase tracking-wider text-slate-400 dark:text-zinc-500">
+              Resources
+            </h3>
+            <ul className="space-y-2.5">
               <li>
-                <Link href="/" className="hover:text-blue-500 dark:hover:text-blue-400">
-                  Home
+                <Link href="/privacy-policy">
+                  <span className="text-sm text-slate-600 dark:text-zinc-400 hover:text-violet-600 dark:hover:text-violet-400 transition-colors duration-200">
+                    Privacy Policy
+                  </span>
                 </Link>
               </li>
               <li>
-                <Link href="/about" className="hover:text-blue-500 dark:hover:text-blue-400">
-                  About
-                </Link>
-              </li>
-              <li>
-                <Link href="/blogs" className="hover:text-blue-500 dark:hover:text-blue-400">
-                  Blogs
-                </Link>
-              </li>
-              <li>
-                <Link href="/premium" className="hover:text-blue-500 dark:hover:text-blue-400">
-                  Premium
-                </Link>
-              </li>
-              <li>
-                <Link href="/support" className="hover:text-blue-500 dark:hover:text-blue-400">
-                  Support
-                </Link>
-              </li>
-              <li>
-                <Link href="/contact" className="hover:text-blue-500 dark:hover:text-blue-400">
-                  Contact
-                </Link>
-              </li>
-              <li>
-                <Link href="/privacy-policy" className="hover:text-blue-500 dark:hover:text-blue-400">
-                  Privacy Policy
-                </Link>
+                <span className="text-xs text-slate-400 dark:text-zinc-500 leading-relaxed block">
+                  This blog does not track users or store personal info, except emails provided explicitly via forms.
+                </span>
               </li>
             </ul>
           </div>
+
         </div>
 
-        {/* Copyright (Centered at the bottom) */}
-        <div className="text-center mt-6">
-          <p className="text-gray-600 dark:text-gray-400">
-            &copy; {new Date().getFullYear()} Decode with Hriday. All rights reserved.
+        <div className="border-t border-slate-200/50 dark:border-zinc-800/80 mt-12 pt-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <p className="text-xs text-slate-400 dark:text-zinc-500">
+            &copy; {currentYear} Decode with Hriday. All rights reserved.
           </p>
         </div>
       </div>
-    </motion.footer>
+    </footer>
   );
 };
 

@@ -1,226 +1,143 @@
-// app/(components)/Navbar.js
+// app/components/Navbar.js
 'use client';
 import Link from 'next/link';
 import ThemeToggler from './ThemeToggler';
 import { useState, useEffect } from 'react';
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
-import { useRouter } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 import Image from 'next/image';
-import { FaBars, FaTimes } from 'react-icons/fa'; // Import icons
+import { FaBars, FaTimes } from 'react-icons/fa';
+import { motion, AnimatePresence } from 'framer-motion';
 
 const Navbar = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
-  const [user, setUser] = useState(null);
-  const [dropdownOpen, setDropdownOpen] = useState(false);
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false); // Mobile menu state
-  const supabase = createClientComponentClient();
-  const router = useRouter();
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const pathname = usePathname();
 
   useEffect(() => {
     const handleScroll = () => {
-      const scrollPosition = window.scrollY;
-      setIsScrolled(scrollPosition > 50);
+      setIsScrolled(window.scrollY > 20);
     };
-
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   useEffect(() => {
-    const checkUserSession = async () => {
-      const {
-        data: { session },
-      } = await supabase.auth.getSession();
+    setMobileMenuOpen(false);
+  }, [pathname]);
 
-      if (session) {
-        setIsLoggedIn(true);
-        setUser(session.user);
-      } else {
-        setIsLoggedIn(false);
-        setUser(null);
-      }
-    };
-    checkUserSession();
-
-    const { data: authListener } = supabase.auth.onAuthStateChange(
-      (_event, session) => {
-        setIsLoggedIn(!!session);
-        setUser(session?.user || null);
-      }
-    );
-
-    return () => {
-      authListener?.subscription.unsubscribe();
-    };
-  }, [supabase.auth]);
-
-  const handleSignOut = async () => {
-    const { error } = await supabase.auth.signOut();
-    if (!error) {
-      router.push('/');
-      router.refresh();
-    } else {
-      console.error('Error signing out:', error);
-    }
-  };
-
-  const toggleDropdown = () => {
-    setDropdownOpen(!dropdownOpen);
-  };
-
-  const toggleMobileMenu = () => {
-    setMobileMenuOpen(!mobileMenuOpen);
-  };
-
-    // Close dropdown when clicking outside
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (dropdownOpen && !event.target.closest('.relative.group')) { // Correct selector
-        setDropdownOpen(false);
-      }
-    };
-
-    if (dropdownOpen) {
-      document.addEventListener('click', handleClickOutside);
-    }
-
-    return () => {
-      document.removeEventListener('click', handleClickOutside);
-    };
-  }, [dropdownOpen]);
-
-    // Close mobile menu on route change
-    useEffect(() => {
-        setMobileMenuOpen(false);
-    }, [router]);
-
-
+  const navLinks = [
+    { name: 'Home', path: '/' },
+    { name: 'Blogs', path: '/blogs' },
+    { name: 'About', path: '/about' },
+    { name: 'Contact', path: '/contact' },
+  ];
 
   return (
-    <nav
-      className={`sticky top-0 z-50 py-4 px-6 md:px-12 backdrop-blur-md transition-all duration-300 ${
+    <header
+      className={`sticky top-0 z-50 transition-all duration-300 w-full ${
         isScrolled
-          ? 'bg-white/70 dark:bg-gray-900/70 shadow-md'
-          : 'bg-white/90 dark:bg-gray-900/90'
+          ? 'bg-white/70 dark:bg-[#030712]/75 border-b border-slate-200/50 dark:border-zinc-800/80 shadow-sm backdrop-blur-md py-3'
+          : 'bg-[#f8fafc]/90 dark:bg-[#030712]/90 backdrop-blur-sm py-5'
       }`}
     >
-      <div className="container mx-auto flex items-center justify-between flex-wrap">
-        <Link href="/">
-          <Image
-            src="/DWH_logo.png"
-            alt="Blog Logo"
-            width={50}
-            height={50}
-            className="hover:scale-105 transition-transform"
-          />
+      <div className="container mx-auto px-4 md:px-8 flex items-center justify-between">
+        {/* Logo */}
+        <Link href="/" className="flex items-center space-x-2.5">
+          <div className="relative w-9 h-9 sm:w-10 sm:h-10 hover:scale-105 transition-transform duration-300">
+            <Image
+              src="/dwh_new_logo.png"
+              alt="Decode with Hriday Logo"
+              fill
+              sizes="40px"
+              className="object-contain"
+              priority
+            />
+          </div>
+          <span className="font-display font-bold text-lg sm:text-xl tracking-tight bg-gradient-to-r from-violet-600 to-indigo-600 dark:from-violet-400 dark:to-indigo-400 bg-clip-text text-transparent hidden sm:inline-block">
+            Decode with Hriday
+          </span>
         </Link>
 
-        {/* Mobile Menu Button */}
-        <div className="md:hidden">
+        {/* Desktop Menu */}
+        <nav className="hidden md:flex items-center space-x-1.5">
+          {navLinks.map((link) => {
+            const isActive = pathname === link.path || (link.path !== '/' && pathname.startsWith(link.path));
+            return (
+              <Link key={link.path} href={link.path}>
+                <span className={`relative px-4 py-2 text-sm font-medium transition-colors rounded-lg ${
+                  isActive 
+                    ? 'text-violet-600 dark:text-violet-400' 
+                    : 'text-slate-600 dark:text-zinc-400 hover:text-slate-900 dark:hover:text-zinc-100 hover:bg-slate-100/50 dark:hover:bg-zinc-800/40'
+                }`}>
+                  {link.name}
+                  {isActive && (
+                    <motion.span
+                      layoutId="activeNavTab"
+                      className="absolute bottom-[-2px] left-4 right-4 h-0.5 bg-violet-600 dark:bg-violet-400 rounded-full"
+                      transition={{ type: 'spring', stiffness: 380, damping: 30 }}
+                    />
+                  )}
+                </span>
+              </Link>
+            );
+          })}
+          
+          <div className="pl-4 border-l border-slate-200 dark:border-zinc-800 ml-2">
+            <ThemeToggler />
+          </div>
+        </nav>
+
+        {/* Mobile Actions */}
+        <div className="flex items-center space-x-3 md:hidden">
+          <ThemeToggler />
           <button
-            onClick={toggleMobileMenu}
-            className="text-gray-600 dark:text-gray-400 hover:text-blue-500 dark:hover:text-blue-400"
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            aria-label="Toggle Navigation Menu"
+            className="p-2 rounded-xl border border-slate-200/50 dark:border-zinc-800/80 bg-white/60 dark:bg-zinc-900/60 text-slate-700 dark:text-zinc-300 hover:bg-slate-100 dark:hover:bg-zinc-800/60 transition-colors"
           >
-            {mobileMenuOpen ? <FaTimes /> : <FaBars />}
+            {mobileMenuOpen ? <FaTimes className="w-5 h-5" /> : <FaBars className="w-5 h-5" />}
           </button>
         </div>
+      </div>
 
-        {/* Desktop Menu & Mobile Menu (Conditional Rendering) */}
-        <div
-          className={`w-full md:flex md:items-center md:w-auto ${
-            mobileMenuOpen ? 'block' : 'hidden'
-          } md:space-x-8 mt-4 md:mt-0`}
-        >
-          <div className="flex flex-col md:flex-row md:items-center md:space-x-8">
-            <Link href="/">
-              <span className="block hover:text-blue-500 dark:hover:text-blue-400 py-2 md:py-0">
-                Home
-              </span>
-            </Link>
-            <Link href="/blogs">
-              <span className="block hover:text-blue-500 dark:hover:text-blue-400 py-2 md:py-0">
-                Blogs
-              </span>
-            </Link>
-            <Link href="/premium">
-              <span className="block hover:text-blue-500 dark:hover:text-blue-400 py-2 md:py-0">
-                Premium
-              </span>
-            </Link>
-            <Link href="/about">
-              <span className="block hover:text-blue-500 dark:hover:text-blue-400 py-2 md:py-0">
-                About
-              </span>
-            </Link>
-            <Link href="/support">
-              <span className="block hover:text-blue-500 dark:hover:text-blue-400 py-2 md:py-0">
-                Support
-              </span>
-            </Link>
-            <Link href="/contact">
-              <span className="block hover:text-blue-500 dark:hover:text-blue-400 py-2 md:py-0">
-                Contact
-              </span>
-            </Link>
-
-            {isLoggedIn ? (
-              <div className="relative group">
-                <button
-                  className="flex items-center space-x-2 py-2 md:py-0"
-                  onClick={toggleDropdown}
-                >
-                  <span>Profile</span>
-                </button>
-                <div
-                  className={`absolute ${
-                    dropdownOpen ? 'block' : 'hidden'
-                  } bg-white dark:bg-gray-800 shadow-lg rounded-md min-w-[150px] right-0 mt-2`}
-                >
-                  <Link href="/profile">
-                    <span className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700">
-                      Profile
-                    </span>
-                  </Link>
-                  {/* <Link href="/payments">
-                    <span className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700">
-                      Payments
-                    </span>
-                  </Link>
-                  <Link href="/membership">
-                    <span className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700">
-                      Membership
-                    </span>
-                  </Link> */}
-                  <button
-                    onClick={handleSignOut}
-                    className="block w-full text-left px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700"
+      {/* Mobile Menu Dropdown */}
+      <AnimatePresence>
+        {mobileMenuOpen && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            exit={{ opacity: 0, height: 0 }}
+            transition={{ duration: 0.25, ease: 'easeInOut' }}
+            className="md:hidden overflow-hidden bg-white/95 dark:bg-[#030712]/95 border-b border-slate-200/60 dark:border-zinc-800/80 backdrop-blur-md"
+          >
+            <div className="px-4 py-6 space-y-2 flex flex-col">
+              {navLinks.map((link, index) => {
+                const isActive = pathname === link.path || (link.path !== '/' && pathname.startsWith(link.path));
+                return (
+                  <motion.div
+                    key={link.path}
+                    initial={{ opacity: 0, x: -10 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: index * 0.05 }}
                   >
-                    Logout
-                  </button>
-                </div>
-              </div>
-            ) : (
-              <div className="flex flex-col md:flex-row md:items-center md:space-x-4">
-                <Link href="/login">
-                  <span className="block hover:text-blue-500 dark:hover:text-blue-400 py-2 md:py-0">
-                    Login
-                  </span>
-                </Link>
-                <Link href="/signup">
-                  <span className="bg-blue-500 text-white px-4 py-2 rounded-full hover:bg-blue-600 transition-colors block mt-2 md:mt-0">
-                    Signup
-                  </span>
-                </Link>
-              </div>
-            )}
-            <ThemeToggler />
+                    <Link href={link.path}>
+                      <span className={`block px-4 py-3 text-base font-semibold rounded-xl transition-all ${
+                        isActive
+                          ? 'bg-violet-500/10 text-violet-600 dark:text-violet-400 border-l-4 border-violet-500 pl-3'
+                          : 'text-slate-600 dark:text-zinc-400 hover:text-slate-900 dark:hover:text-zinc-100 hover:bg-slate-100/50 dark:hover:bg-zinc-800/40'
+                      }`}>
+                        {link.name}
+                      </span>
+                    </Link>
+                  </motion.div>
+                );
+              })}
             </div>
-          </div>
-        </div>
-      </nav>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </header>
   );
 };
 
 export default Navbar;
-
