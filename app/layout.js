@@ -1,23 +1,72 @@
-// app/layout.js
-import { Inter } from 'next/font/google';
+import { Inter, Outfit } from 'next/font/google';
 import Script from 'next/script';
 import './globals.css';
 import ClientLayout from './components/ClientLayout';
 
-const inter = Inter({ subsets: ['latin'] });
+const inter = Inter({ 
+  subsets: ['latin'],
+  variable: '--font-inter',
+  display: 'swap',
+});
+
+const outfit = Outfit({
+  subsets: ['latin'],
+  variable: '--font-outfit',
+  display: 'swap',
+});
 
 export const metadata = {
-  title: 'Decode with Hriday',
-  description: 'Read the latest blogs on web development, programming, and technology.',
+  metadataBase: new URL('https://decodewithhriday.vercel.app'),
+  title: {
+    default: 'Decode with Hriday',
+    template: '%s | Decode with Hriday',
+  },
+  description: 'Uncover the depths of modern web development, software engineering, and product building. Insights and guides by Hriday Sehgal.',
+  alternates: {
+    canonical: '/',
+  },
   icons: {
     icon: '/favicon.ico',
+  },
+  openGraph: {
+    type: 'website',
+    locale: 'en_US',
+    url: 'https://decodewithhriday.vercel.app',
+    title: 'Decode with Hriday',
+    description: 'Uncover the depths of modern web development, software engineering, and product building. Insights and guides by Hriday Sehgal.',
+    siteName: 'Decode with Hriday',
+    images: [
+      {
+        url: '/dwh_new_logo.png',
+        width: 512,
+        height: 512,
+        alt: 'Decode with Hriday',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Decode with Hriday',
+    description: 'Uncover the depths of modern web development, software engineering, and product building. Insights and guides by Hriday Sehgal.',
+    images: ['/dwh_new_logo.png'],
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
   },
 };
 
 export default function RootLayout({ children }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <head>
+      <body className={`${inter.variable} ${outfit.variable} font-sans bg-[#f8fafc] text-slate-900 dark:bg-[#030712] dark:text-zinc-100 transition-colors duration-300 min-h-screen flex flex-col`} suppressHydrationWarning>
         {/* Google Tag Manager - Head Script */}
         <Script id="gtm-head" strategy="afterInteractive">
           {`
@@ -28,22 +77,6 @@ export default function RootLayout({ children }) {
             })(window,document,'script','dataLayer','GTM-TQPKWCMG');
           `}
         </Script>
-
-        <link
-          href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap"
-          rel="stylesheet"
-        />
-      </head>
-      <body className={inter.className} suppressHydrationWarning>
-        {/* Google Tag Manager (noscript) - Inside <body> */}
-        <noscript>
-          <iframe
-            src="https://www.googletagmanager.com/ns.html?id=GTM-TQPKWCMG"
-            height="0"
-            width="0"
-            style={{ display: 'none', visibility: 'hidden' }}
-          ></iframe>
-        </noscript>
 
         <ClientLayout>{children}</ClientLayout>
       </body>

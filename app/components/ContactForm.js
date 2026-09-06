@@ -1,7 +1,6 @@
 // components/ContactForm.js
 "use client";
 import { useState } from 'react';
-import { supabase } from '@/lib/supabase'; // Import the Supabase client
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -27,16 +26,7 @@ export default function ContactForm() {
     setLoading(true);
 
     try {
-      // 1. Save to Supabase
-      const { error: supabaseError } = await supabase
-        .from('contacts')
-        .insert([{ name, email, message }]);
-
-      if (supabaseError) {
-        throw new Error(`Supabase error: ${supabaseError.message}`);
-      }
-
-      // 2. Send Email via Resend (API Route)
+      // Send Email & Save via API Route
       const res = await fetch('/api/send-contact-email', {
         method: 'POST',
         headers: {
@@ -50,7 +40,7 @@ export default function ContactForm() {
         throw new Error(errorData.error || 'Failed to send email.');
       }
 
-      toast.success("Thank you for your message! We'll get back to you soon.");
+      toast.success("Message sent successfully!");
 
       // Clear form
       setName('');
@@ -77,57 +67,72 @@ export default function ContactForm() {
         pauseOnFocusLoss
         draggable
         pauseOnHover
+        theme="colored"
       />
-      <form onSubmit={handleSubmit} className="space-y-6">
+      
+      <form onSubmit={handleSubmit} className="space-y-5">
         <div>
-          <label htmlFor="name" className="block text-sm font-medium text-gray-700 dark:text-gray-300">Name</label>
+          <label htmlFor="name" className="block text-xs font-bold uppercase tracking-wider text-slate-400 dark:text-zinc-500 mb-1.5 select-none">
+            Name
+          </label>
           <input
             type="text"
             id="name"
             value={name}
             onChange={(e) => setName(e.target.value)}
-            className="mt-1 block w-full px-3 py-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+            className="w-full px-4 py-3 bg-white/60 dark:bg-zinc-900/60 border border-slate-200 dark:border-zinc-800/80 rounded-xl focus:outline-none focus:ring-2 focus:ring-violet-500/20 focus:border-violet-500 transition-all duration-200 text-sm placeholder:text-slate-400 dark:placeholder:text-zinc-500 text-slate-800 dark:text-zinc-200"
             placeholder="Your Name"
             required
+            disabled={loading}
           />
         </div>
+
         <div>
-          <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-300">Email</label>
+          <label htmlFor="email" className="block text-xs font-bold uppercase tracking-wider text-slate-400 dark:text-zinc-500 mb-1.5 select-none">
+            Email
+          </label>
           <input
             type="email"
             id="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="mt-1 block w-full px-3 py-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+            className="w-full px-4 py-3 bg-white/60 dark:bg-zinc-900/60 border border-slate-200 dark:border-zinc-800/80 rounded-xl focus:outline-none focus:ring-2 focus:ring-violet-500/20 focus:border-violet-500 transition-all duration-200 text-sm placeholder:text-slate-400 dark:placeholder:text-zinc-500 text-slate-800 dark:text-zinc-200"
             placeholder="your@email.com"
             required
+            disabled={loading}
           />
         </div>
+
         <div>
-          <label htmlFor="message" className="block text-sm font-medium text-gray-700 dark:text-gray-300">Message</label>
+          <label htmlFor="message" className="block text-xs font-bold uppercase tracking-wider text-slate-400 dark:text-zinc-500 mb-1.5 select-none">
+            Message
+          </label>
           <textarea
             id="message"
             value={message}
             onChange={(e) => setMessage(e.target.value)}
-            rows="4"
-            className="mt-1 block w-full px-3 py-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-            placeholder="Your Message"
+            rows="5"
+            className="w-full px-4 py-3 bg-white/60 dark:bg-zinc-900/60 border border-slate-200 dark:border-zinc-800/80 rounded-xl focus:outline-none focus:ring-2 focus:ring-violet-500/20 focus:border-violet-500 transition-all duration-200 text-sm placeholder:text-slate-400 dark:placeholder:text-zinc-500 text-slate-800 dark:text-zinc-200 resize-none"
+            placeholder="How can we help you?"
             required
+            disabled={loading}
           />
         </div>
+
         <button
           type="submit"
-          className={`w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 ${loading ? 'opacity-50 cursor-not-allowed' : ''
-            }`}
           disabled={loading}
+          className={`w-full flex justify-center items-center py-3.5 px-6 border border-transparent rounded-xl shadow-md text-sm font-semibold text-white bg-violet-600 hover:bg-violet-750 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-violet-500 transition-all duration-200 ${
+            loading ? 'opacity-60 cursor-not-allowed' : 'hover:shadow-lg'
+          }`}
         >
           {loading ? (
             <>
-              <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+              <svg className="animate-spin -ml-1 mr-3 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                 <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                 <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
               </svg>
-              Sending...
+              Sending Message...
             </>
           ) : (
             'Send Message'

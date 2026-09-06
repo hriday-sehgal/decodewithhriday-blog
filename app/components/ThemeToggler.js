@@ -1,41 +1,53 @@
-// app/(components)/ThemeToggler.js
+// app/components/ThemeToggler.js
 'use client';
 import { useTheme } from 'next-themes';
 import { SunIcon, MoonIcon } from '@heroicons/react/24/outline';
-import { motion, useMotionValue, useTransform } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
+import { useEffect, useState } from 'react';
 
 const ThemeToggler = () => {
-  const { theme, setTheme, resolvedTheme } = useTheme();
-  const x = useMotionValue(0);
-  const rotate = useTransform(x, [-100, 0, 100], [-360, 0, 360]);
-  const iconColor = useTransform(
-    x,
-    [-100, 0, 100],
-    ['rgb(203 213 225)', 'rgb(156 163 175)', 'rgb(250 204 21)']
-  );
+  const { setTheme, resolvedTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) {
+    return <div className="w-10 h-10 rounded-xl bg-slate-100 dark:bg-zinc-800 animate-pulse border border-slate-200/40 dark:border-zinc-800/80" />;
+  }
 
   const handleToggle = () => {
-    const newTheme = resolvedTheme === 'dark' ? 'light' : 'dark';
-    setTheme(newTheme);
-    // Animate the icon smoothly (using set)
-    x.set(newTheme === 'dark' ? 100 : -100); // Changed .start() to .set()
+    setTheme(resolvedTheme === 'dark' ? 'light' : 'dark');
   };
 
   return (
     <motion.button
       aria-label="Toggle Dark Mode"
       type="button"
-      className="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
       onClick={handleToggle}
-      style={{ rotate }}
+      whileHover={{ scale: 1.05 }}
+      whileTap={{ scale: 0.95 }}
+      className="p-2.5 rounded-xl border border-slate-200/50 dark:border-zinc-800/80 bg-white/60 dark:bg-zinc-900/60 backdrop-blur-md shadow-sm hover:shadow dark:shadow-black/20 text-slate-700 dark:text-zinc-300 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-violet-500/20"
     >
-      <motion.span style={{ color: iconColor }}>
-        {resolvedTheme === 'dark' ? (
-          <SunIcon className="h-5 w-5" />
-        ) : (
-          <MoonIcon className="h-5 w-5" />
-        )}
-      </motion.span>
+      <div className="relative w-5 h-5 flex items-center justify-center">
+        <AnimatePresence mode="wait" initial={false}>
+          <motion.div
+            key={resolvedTheme}
+            initial={{ y: 15, opacity: 0, rotate: 45, scale: 0.8 }}
+            animate={{ y: 0, opacity: 1, rotate: 0, scale: 1 }}
+            exit={{ y: -15, opacity: 0, rotate: -45, scale: 0.8 }}
+            transition={{ duration: 0.2, ease: "easeInOut" }}
+            className="absolute"
+          >
+            {resolvedTheme === 'dark' ? (
+              <SunIcon className="w-5 h-5 text-amber-400 stroke-[1.8]" />
+            ) : (
+              <MoonIcon className="w-5 h-5 text-indigo-600 dark:text-indigo-400 stroke-[1.8]" />
+            )}
+          </motion.div>
+        </AnimatePresence>
+      </div>
     </motion.button>
   );
 };
